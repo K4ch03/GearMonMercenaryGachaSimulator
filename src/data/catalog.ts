@@ -49,7 +49,7 @@ const RAW: {
   { category: '戦闘経験書', name: '戦闘経験書x8', appearancePercent: 12.02, acquisitionPercent: 50 },
   { category: '戦闘経験書', name: '戦闘経験書x12', appearancePercent: 8, acquisitionPercent: 50 },
   { category: '戦闘経験書', name: '戦闘経験書x20', appearancePercent: 4, acquisitionPercent: 50 },
-  { category: '傭兵徽章', name: '傭兵徽章', appearancePercent: 5, acquisitionPercent: 50 },
+  { category: '傭兵徽章', name: '傭兵徽章x2', appearancePercent: 5, acquisitionPercent: 50 },
   { category: 'コイン', name: 'コインx100', appearancePercent: 5, acquisitionPercent: 50 },
   { category: 'コイン', name: 'コインx200', appearancePercent: 5, acquisitionPercent: 50 },
   { category: 'ダイヤ', name: 'ダイヤx10', appearancePercent: 5, acquisitionPercent: 50 },
@@ -86,5 +86,9 @@ export const CATEGORY_ORDER = [
   'ダイヤ',
 ] as const;
 
-/** 結果表示「計X個」（アイテム名の数値×獲得の合計＝ quantityTotals） */
-export const DISPLAY_KEI_CATEGORIES = new Set<string>(['戦闘経験書', 'コイン', 'ダイヤ']);
+export function stackDisplaySuffix(category: string): string | null {
+  if (category === '戦闘経験書' || category === '傭兵徽章') return '個';
+  if (category === 'コイン') return 'コイン';
+  if (category === 'ダイヤ') return 'ダイヤ';
+  return null;
+}

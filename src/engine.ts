@@ -1,6 +1,6 @@
 import {
   CATEGORY_ORDER,
-  DISPLAY_KEI_CATEGORIES,
+  stackDisplaySuffix,
   GACHA_ITEMS,
   type GachaItem,
 } from './data/catalog';
@@ -237,24 +237,28 @@ export function simulateTransfer(params: SimParams): SimResult {
 
 export type ResultLine = {
   item: GachaItem;
-  value: number;
-  /** 戦闘経験書・コイン・ダイヤは「計X個」表記 */
-  displayKei: boolean;
+  /** 合計値（名前内数値×倍率の合計） */
+  totalValue: number;
+  /** 獲得成功回数 */
+  hitCount: number;
+  stackSuffix: string | null;
 };
 
 export function buildResultLines(result: SimResult): ResultLine[] {
   const byId = new Map(GACHA_ITEMS.map((i) => [i.id, i]));
   const lines: ResultLine[] = [];
 
-  for (const [id, value] of Object.entries(result.quantityTotals)) {
-    if (value <= 0) continue;
+  for (const [id, totalValue] of Object.entries(result.quantityTotals)) {
+    if (totalValue <= 0) continue;
     const item = byId.get(id);
     if (!item) continue;
 
+    const hitCount = result.hitTotals[id] ?? 0;
     lines.push({
       item,
-      value,
-      displayKei: DISPLAY_KEI_CATEGORIES.has(item.category),
+      totalValue,
+      hitCount,
+      stackSuffix: stackDisplaySuffix(item.category),
     });
   }
 

@@ -6,6 +6,7 @@ import {
   ORBS_PER_GACHA,
   orbsCostPerGacha,
   type GachaDetailLog,
+  type ResultLine,
   type SimResult,
   type TransferMultiplier,
 } from './engine';
@@ -42,6 +43,13 @@ function formatNum(n: number): string {
 
 function escapeHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+}
+
+function formatResultValue(line: ResultLine): string {
+  if (line.stackSuffix) {
+    return `${formatNum(line.hitCount)} (${formatNum(line.totalValue)}${line.stackSuffix})`;
+  }
+  return formatNum(line.totalValue);
 }
 
 const saved = loadSaved();
@@ -159,7 +167,7 @@ function renderResults(result: SimResult, multiplier: TransferMultiplier) {
     <div class="result-line">
       <span class="cat-badge" style="background:${line.item.color}22;border-color:${line.item.color};color:${line.item.color}">${escapeHtml(line.item.category)}</span>
       <span class="item-name">${escapeHtml(line.item.name)}</span>
-      <span class="item-total">${line.displayKei ? `計${formatNum(line.value)}個` : formatNum(line.value)}</span>
+      <span class="item-total">${formatResultValue(line)}</span>
     </div>`,
     )
     .join('');
