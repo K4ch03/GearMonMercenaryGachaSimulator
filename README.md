@@ -33,14 +33,64 @@ npm run preview
 
 ## 公開する
 
-### Vercel（手順が短い）
+### Vercel — 専用リポジトリ（推奨：gacha-sim だけ公開）
 
-1. このフォルダ（または mono-repo なら Root Directory に `gacha-sim`）を GitHub に push
-2. [Vercel](https://vercel.com) で GitHub 連携 → プロジェクト追加
-3. **Framework**: Vite / **Build**: `npm run build` / **Output**: `dist`
-4. デプロイ後の `https://<project>.vercel.app` が公開 URL
+**GitHub のリポジトリ直下**に、このフォルダの中身だけを置きます（`package.json` がルート）。  
+CursorRepo 全体や Python プロジェクトは **含めません**。
 
-`vite.config.ts` の `base` は **`/` のまま**（変更不要）。
+#### 1. ローカルでビルド確認
+
+```powershell
+cd C:\CursorRepo\gacha-sim
+npm install
+npm run build
+```
+
+#### 2. 専用 GitHub リポジトリへ push
+
+GitHub で空リポジトリ（例: `gacha-sim`）を作成してから:
+
+```powershell
+cd C:\CursorRepo\gacha-sim
+git init -b main
+git add -A
+git commit -m "Initial commit: gacha simulator"
+git remote add origin https://github.com/<ユーザー名>/gacha-sim.git
+git push -u origin main
+```
+
+`CursorRepo` 全体がすでに別の git リポの場合は、**このフォルダだけ**別途 `git init` するか、サブフォルダ用の push 手順を使い、リモートを混同しないようにしてください。
+
+#### 3. Vercel ダッシュボード設定チェックリスト
+
+| 項目 | 値 |
+|------|-----|
+| Import する repo | 上記 **gacha-sim 専用** repo |
+| Root Directory | **空**（`.` = リポジトリルート） |
+| Framework Preset | **Vite** |
+| Build Command | `npm run build` |
+| Output Directory | `dist` |
+| Install Command | `npm install`（デフォルト） |
+| 環境変数 | **不要**（`VITE_BASE` は GitHub Pages 用のみ） |
+
+[`vercel.json`](vercel.json) があるため、Vercel が上記を自動認識することもあります。
+
+#### 4. 公開 URL
+
+デプロイ成功後: `https://<project-name>.vercel.app`  
+以降は `main` へ push するたびに自動再デプロイされます。
+
+`vite.config.ts` の `base` は **`/` のまま**（Vercel では変更不要）。
+
+Cursor の Vercel プラグインを使う場合: このフォルダをワークスペースルートに開き **`/deploy`**（プレビュー）または **`/deploy production`**（本番）。
+
+---
+
+### Vercel — mono-repo（CursorRepo 全体を 1 repo にする場合）
+
+1. CursorRepo 全体を GitHub に push
+2. Vercel で Import → **Root Directory** に `gacha-sim` を指定
+3. それ以外は上記チェックリストと同じ（Build / Output / Framework）
 
 ### GitHub Pages
 

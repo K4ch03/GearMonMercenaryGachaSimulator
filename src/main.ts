@@ -5,7 +5,6 @@ import {
   normalizedPercent,
   STORAGE_KEY,
   totalWeight,
-  type Rarity,
   type SimConfig,
 } from './config';
 import type { WorkerOut, WorkerRunRequest } from './worker-types';
