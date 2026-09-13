@@ -1,9 +1,9 @@
 # ギアモン傭兵ガチャシミュレーター
 
-ギアモン傭兵ガチャの獲得結果をシミュレーションします。
-こちらのリンクから遊べます
-https://gear-mon-mercenary-gacha-simulator-swart.vercel.app/
-
+ギアモン傭兵ガチャの獲得結果をシミュレーションします。  
+こちらのリンクから遊べます  
+https://gear-mon-mercenary-gacha-simulator-swart.vercel.app/  
+  
 ## 仕様概要
 
 - **1倍転送**: 1回の抽選結果を獲得する
